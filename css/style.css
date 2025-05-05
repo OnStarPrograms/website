@@ -38,6 +38,11 @@ canvas {
   height:250px;
 }
 
+
 .hidden{
   display: none;
+}
+
+#doom{
+    image-rendering: pixelated;
 }
