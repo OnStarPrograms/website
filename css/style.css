@@ -6,7 +6,7 @@ body{
 
 #introduction p{
   font-size:1.5em;
-}
+  }
 
 #introduction #hello{
   font-size:1em;
@@ -16,21 +16,55 @@ body{
   position: absolute;
   left: 480px;
   top: 260px;
+  animation-name: intro_anim;
+  animation-duration: 1s;
+  /*animation-delay: 0s;*/
+
 }
 #programmer{
   position: absolute;
   left: 220px;
   top: 15px;
+  animation-name: programmer_anim;
+  animation-duration: .5s;
+  /*animation-delay: .5s;*/
 }
 #teacher{
   position: absolute;
   left: 140px;
   top: 220px;
+  animation-name: teacher_anim;
+  animation-duration: .50s;
+  /*animation-delay: .75s;*/
 }
 #game{
   position: absolute;
   left: 770px;
   top: 60px;
+  animation-name: game_anim;
+  animation-duration: .75s;
+  /*animation-delay: .25s;*/
+}
+
+@keyframes intro_anim {
+  0%   {left:0px; top:0px;}
+  50%  {left:480px; top:210px;}
+  100% {left:480px; top:260px;}
+}
+@keyframes programmer_anim {
+  0%   {left:0px; top:0px;}
+  50%  {left:220px; top:0px;}
+  100% {left:220px; top:15px;}
+}
+@keyframes teacher_anim {
+  0%   {left:0px; top:0px;}
+  50%  {left:140px; top:200px;}
+  100% {left:140px; top:220px;}
+}
+@keyframes game_anim {
+  0%   {left:0px; top:0px;}
+  50%  {left:770px; top:10px;}
+  100% {left:770px; top:60px;}
 }
 
 canvas {

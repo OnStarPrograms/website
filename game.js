@@ -26,28 +26,157 @@ function spritePositionToImagePosition(row, col) {
     }
 }
 
-var position = spritePositionToImagePosition(2, 2);
+class Table{
+  #scary = false;
+  constructor(context){
+    this.drawable = context;
+  }
 
-function doom(){
-    ctx.fillStyle = 'rgba(0,0,0,100)';
-    ctx.fillRect(0,0,width,height);
-    ctx.fillStyle = 'rgba(104,71,45,100)';
-    ctx.fillRect(20,0,width-40,height);
-    ctx.fillStyle = 'rgba(204,0,0,100)';
-    ctx.fillRect(20,20,width-40,height-40);
-    ctx.fillStyle = 'rgba(255,255,255,100)';
-    ctx.fillRect(width-100,0,width,60);
-    ctx.drawImage(
+  draw(){
+    this.drawable.fillStyle = 'rgba(0,0,0,100)';
+    this.drawable.fillRect(0,0,width,height);
+    if (this.#scary == false){
+
+      this.drawable.beginPath();
+      this.drawable.moveTo(0, height); // Move to the starting point (bottom-left corner)
+      this.drawable.lineTo(width, height); // Draw the bottom base
+      this.drawable.lineTo(width-60, 0);  // Draw the right side
+      this.drawable.lineTo(50, 0);   // Draw the top base
+      this.drawable.closePath();    // Close the path (draw the left side)
+
+      this.drawable.stroke(); // Draw the outline of the trapezoid
+
+      this.drawable.fillStyle = 'rgba(104,71,45,100)';
+      this.drawable.fill();
+      
+      this.drawable.beginPath();
+      this.drawable.moveTo(10, height-30); // Move to the starting point (bottom-left corner)
+      this.drawable.lineTo(width-12, height-30); // Draw the bottom base
+      this.drawable.lineTo(width-50, 20);  // Draw the right side
+      this.drawable.lineTo(40, 20);   // Draw the top base
+      this.drawable.closePath();    // Close the path (draw the left side)
+
+      this.drawable.stroke(); // Draw the outline of the trapezoid
+
+      this.drawable.fillStyle = 'rgba(204,0,0,100)';
+      this.drawable.fill();
+      
+      
+    }
+    else {
+
+      
+      
+      this.drawable.beginPath();
+      this.drawable.moveTo(width/2-10, height/2-20); // Move to the starting point (bottom-left corner)
+      this.drawable.lineTo(width/2+10, height/2-20); // Draw the bottom base
+      this.drawable.lineTo(width/2+10, height/2-30);  // Draw the right side
+      this.drawable.lineTo(width/2-10, height/2-30);   // Draw the top base
+      this.drawable.closePath();    // Close the path (draw the left side)
+
+      this.drawable.stroke(); // Draw the outline of the trapezoid
+
+      this.drawable.fillStyle = 'rgba(245,245,82,100)';
+      this.drawable.fill();    }
+  }
+}
+
+class Player{
+  #hand = ['fire', 'sword', 'flag', 'health'];
+  #secondaryHand = [];
+  #scary = true;
+  #defend;
+  #attack;
+  #health = 10;
+  #selection = 0;
+  constructor(context){
+    this.drawable = context;
+  }
+
+  get health(){
+    return this.#health;
+  }
+  
+  loseHealth(amount){
+    this.#health-=amount;
+  }
+
+  gainHealth(amount){
+    this.#health+=amount;
+  }
+  
+  giveCard(card){
+    this.#hand.push(card);
+  }
+
+  select(card){
+      this.#selection = card;
+  }
+
+  makeScaryHand(){
+    this.#secondaryHand = this.#hand;
+    this.#hand = ['tower'];
+    this.#scary = true;
+  }
+
+  drawHand(){
+    var posX = 10;
+    var posY = height-40;
+    let prevPos = posY;
+    for (let index = 0; index < this.#hand.length; index++) {
+      const element = this.#hand[index];
+      if (element == 'sword'){
+        var position = spritePositionToImagePosition(this.#scary, 1);
+      }
+      else if (element == 'flag'){
+        var position = spritePositionToImagePosition(this.#scary, 0);
+      }
+      else if (element == 'fire'){
+        var position = spritePositionToImagePosition(this.#scary, 2);
+      }
+      else if (element == 'health'){
+        var position = spritePositionToImagePosition(2, this.#scary);
+      }
+      else {
+        var position = spritePositionToImagePosition(2, 2);
+      }
+
+      posY = prevPos;
+      if (this.#selection == index){
+        prevPos = posY;
+        posY-=10;
+      }
+      
+      
+      ctx.drawImage(
         image,
         position.x,
         position.y,
         SPRITE_WIDTH,
         SPRITE_HEIGHT,
-        0,
-        0,
+        posX,
+        posY,
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
     );
+      posX+=60;
+      
+
+
+    } 
+    
+  }
+  
+}
+
+var myTable = new Table(ctx);
+var myPlayer = new Player(ctx);
+
+function doom(){
+    myTable.draw();
+    myPlayer.drawHand();
+//gameloop
+
     window.requestAnimationFrame(doom);
 }
 
