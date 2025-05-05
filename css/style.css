@@ -23,18 +23,18 @@ body{
 }
 #programmer{
   position: absolute;
-  left: 220px;
-  top: 15px;
-  animation-name: programmer_anim;
-  animation-duration: .5s;
+  left: 140px;
+  top: 200px;
+  animation-name: teacher_anim;
+  animation-duration: 1s;
   /*animation-delay: .5s;*/
 }
 #teacher{
   position: absolute;
-  left: 140px;
-  top: 220px;
-  animation-name: teacher_anim;
-  animation-duration: .50s;
+  left: 260px;
+  top: 50px;
+  animation-name: programmer_anim;
+  animation-duration: 1s;
   /*animation-delay: .75s;*/
 }
 #game{
@@ -42,7 +42,7 @@ body{
   left: 770px;
   top: 60px;
   animation-name: game_anim;
-  animation-duration: .75s;
+  animation-duration: 1s;
   /*animation-delay: .25s;*/
 }
 
@@ -53,13 +53,13 @@ body{
 }
 @keyframes programmer_anim {
   0%   {left:0px; top:0px;}
-  50%  {left:220px; top:0px;}
-  100% {left:220px; top:15px;}
+  50%  {left:260px; top:0px;}
+  100% {left:260px; top:50px;}
 }
 @keyframes teacher_anim {
   0%   {left:0px; top:0px;}
-  50%  {left:140px; top:200px;}
-  100% {left:140px; top:220px;}
+  50%  {left:140px; top:180px;}
+  100% {left:140px; top:200px;}
 }
 @keyframes game_anim {
   0%   {left:0px; top:0px;}

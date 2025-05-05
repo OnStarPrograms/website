@@ -13,7 +13,6 @@ var studentVisible = true;
 var doomVisible = true;
 
 document.addEventListener('mousemove', function(event) {
-    console.log('Mouse X:', event.clientX, 'Mouse Y:', event.clientY);
     mouseX = event.clientX;
     mouseY = event.clientY;
 });
@@ -206,8 +205,6 @@ var addZ = 1;
 window.requestAnimationFrame(gameLoop);
 
 function gameLoop() {
-    console.log(IntroActive);
-    console.log(mouseY);
     var intro = document.getElementById('introduction');
     if (IntroActive === true){
       intro.style.left = (mouseX-125)+'px';

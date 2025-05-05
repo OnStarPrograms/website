@@ -42,6 +42,28 @@ setInterval(() => {
 }, 300);
 
 
+const canvas_mouse = document.getElementById('doom');
+
+function getMousePos(canvas_mouse, event) {
+  const rect = canvas_mouse.getBoundingClientRect();
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
+}
+let mousePos = {x:0, y:0};
+
+canvas_mouse.addEventListener('mousemove', (event) => {
+  mousePos = getMousePos(canvas_mouse, event);
+  const message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+  // Update the coordinates somewhere on the page for visualization
+  // For example, you can update the text content of a <p> element:
+  // document.getElementById("coordinates").textContent = message;
+  console.log(message);
+});
+
+
+
 function spritePositionToImagePosition(row, col) {
     return {
         x: (
@@ -145,6 +167,7 @@ class Table{
   }
 }
 
+
 class Player{
   #hand = ['fire', 'sword', 'flag', 'health'];
   #secondaryHand = [];
@@ -155,6 +178,7 @@ class Player{
   #selection = 0;
   constructor(context){
     this.drawable = context;
+    this.choice = -1;
   }
 
   get health(){
@@ -173,8 +197,8 @@ class Player{
     this.#hand.push(card);
   }
 
-  select(card){
-      this.#selection = card;
+  setChoice(){
+      this.choice = this.#selection;
   }
 
   makeScaryHand(){
@@ -187,6 +211,7 @@ class Player{
     var posX = 10;
     var posY = height-40;
     let prevPos = posY;
+    this.#selection = -1;
     for (let index = 0; index < this.#hand.length; index++) {
       const element = this.#hand[index];
       if (element == 'sword'){
@@ -206,11 +231,21 @@ class Player{
       }
 
       posY = prevPos;
+      if (mousePos.x < posX+40 && mousePos.x > posX){
+        this.#selection = index;
+      }
+
       if (this.#selection == index){
         prevPos = posY;
         posY-=10;
       }
-      
+     
+      if (this.choice == index){
+        posY = prevPos;
+        prevPos = posY;
+        posY-=20;
+
+      }
       
       ctx.drawImage(
         image,
@@ -233,8 +268,15 @@ class Player{
   
 }
 
+
 var myTable = new Table(ctx);
 var myPlayer = new Player(ctx);
+
+
+canvas_mouse.addEventListener('click', function(event) {
+  myPlayer.setChoice();  
+  console.log("player choice is "+myPlayer.choice);
+});
 
 function doom(){
     myTable.draw();
