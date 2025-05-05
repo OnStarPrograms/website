@@ -13,15 +13,28 @@ image.src = spriteSheetURL;
 image.crossOrigin = true;
 
 var candleSprite = [new Image(), new Image(), new Image()];
-candleSprite1 = 'https://onstarprograms.github.io/website/data/C300-1.png'; 
-candleSprite2 = 'https://onstarprograms.github.io/website/data/C300-2.png'; 
-candleSprite3 = 'https://onstarprograms.github.io/website/data/C300-3.png'; 
+let candleSprite1 = 'https://onstarprograms.github.io/website/data/C300-1.png'; 
+let candleSprite2 = 'https://onstarprograms.github.io/website/data/C300-2.png'; 
+let candleSprite3 = 'https://onstarprograms.github.io/website/data/C300-3.png'; 
 candleSprite[0].src = candleSprite1;
 candleSprite[1].src = candleSprite2;
 candleSprite[2].src = candleSprite3;
 
-var hand = new Image();
 
+
+var handTapping = [new Image(), new Image(), new Image(), new Image(), new Image()];
+
+let hand1 = 'https://onstarprograms.github.io/website/data/frame_0_delay-0.17s.gif'; 
+let hand2 = 'https://onstarprograms.github.io/website/data/frame_1_delay-0.17s.giff'; 
+let hand3 = 'https://onstarprograms.github.io/website/data/frame_2_delay-0.17s.gif';  
+let hand4 = 'https://onstarprograms.github.io/website/data/frame_3_delay-0.17s.gif'; 
+let hand5 =  'https://onstarprograms.github.io/website/data/frame_4_delay-0.17s.gif'; 
+
+handTapping[0].src = hand1; 
+handTapping[1].src = hand2;
+handTapping[2].src = hand3;
+handTapping[3].src = hand4;
+handTapping[4].src = hand5;
 
 let timer = 0;
 setInterval(() => {
@@ -88,6 +101,17 @@ class Table{
         0,
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
+    );
+      this.drawable.drawImage(
+        handTapping[timer%5],
+        0,
+        0,
+        handTapping[0].width,
+        handTapping[0].height,
+        40,
+        0,
+        (SPRITE_WIDTH+90),
+        SPRITE_HEIGHT
     );
     
     this.drawable.drawImage(
