@@ -12,6 +12,22 @@ var image = new Image();
 image.src = spriteSheetURL;
 image.crossOrigin = true;
 
+var candleSprite = [new Image(), new Image(), new Image()];
+candleSprite1 = 'https://onstarprograms.github.io/website/data/C300-1.png'; 
+candleSprite2 = 'https://onstarprograms.github.io/website/data/C300-2.png'; 
+candleSprite3 = 'https://onstarprograms.github.io/website/data/C300-3.png'; 
+candleSprite[0].src = candleSprite1;
+candleSprite[1].src = candleSprite2;
+candleSprite[2].src = candleSprite3;
+
+var hand = new Image();
+
+
+let timer = 0;
+setInterval(() => {
+  timer++;
+}, 300);
+
 
 function spritePositionToImagePosition(row, col) {
     return {
@@ -61,6 +77,31 @@ class Table{
       this.drawable.fillStyle = 'rgba(204,0,0,100)';
       this.drawable.fill();
       
+
+      this.drawable.drawImage(
+        candleSprite[timer%3],
+        0,
+        0,
+        candleSprite[timer%3].width,
+        candleSprite[timer%3].height,
+        40,
+        0,
+        (SPRITE_WIDTH+90)/3,
+        SPRITE_HEIGHT/3
+    );
+    
+    this.drawable.drawImage(
+        candleSprite[(timer+1)%3],
+        0,
+        0,
+        candleSprite[timer%3].width,
+        candleSprite[timer%3].height,
+        width-100,
+        height/2-10,
+        (SPRITE_WIDTH+90)/3,
+        SPRITE_HEIGHT/3
+    );
+
       
     }
     else {
@@ -156,10 +197,10 @@ class Player{
         SPRITE_HEIGHT,
         posX,
         posY,
-        (SPRITE_WIDTH+90)/3,
-        SPRITE_HEIGHT/3
+        (SPRITE_WIDTH+90)/4,
+        SPRITE_HEIGHT/4
     );
-      posX+=60;
+      posX+=40;
       
 
 
