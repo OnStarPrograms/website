@@ -1,0 +1,43 @@
+
+
+body{
+  background: #0D7173;    
+}
+
+#introduction p{
+  font-size:1.5em;
+}
+
+#introduction #hello{
+  font-size:1em;
+}
+
+#introduction{
+  position: absolute;
+  left: 480px;
+  top: 260px;
+}
+#programmer{
+  position: absolute;
+  left: 220px;
+  top: 15px;
+}
+#teacher{
+  position: absolute;
+  left: 140px;
+  top: 220px;
+}
+#game{
+  position: absolute;
+  left: 770px;
+  top: 60px;
+}
+
+canvas {
+  width:340px;
+  height:250px;
+}
+
+.hidden{
+  display: none;
+}

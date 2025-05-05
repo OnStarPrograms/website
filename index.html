@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aiden Thomas</title>
+    <link href="./css/98.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+    </div>
+    <div id="introduction" class="window" style="margin: 32px; width: 250px" >
+      <div class="title-bar" onmousedown="moveIntroStart()" onmouseup="moveIntroEnd()">
+        <div class="title-bar-text">
+            Introduction
+        </div>
+
+        <div class="title-bar-controls">
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p id = "hello">Hello, world!</p>
+        <p>I'm <b>Aiden Thomas</b></p>
+        <!-- <div class="field-row">
+
+          <label for="text17">Occupation</label>
+          <select onchange="changeData(this.value)">
+            <option>click me!</option>
+            <option>Programmer</option>
+            <option>About Me</option>
+            <option>Socials</option>
+            <option>DoomGuy</option>
+          </select>
+        </div>
+        --> 
+        <section class="field-row" style="justify-content: flex-end">
+          <button>OK</button>
+          <button>Cancel</button>
+        </section>
+      </div>
+    </div>
+    
+
+
+
+  <div id="programmer" class="window prog" style="margin: 32px; width: 500px" >
+      <div class="title-bar" onmousedown="moveProgramStart()" onmouseup="moveProgramEnd()">
+        <div class="title-bar-text">
+            programmer
+        </div>
+
+        <div class="title-bar-controls">
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p>Here are some of my <b>Projects</b></p>
+          <ul class="tree-view">
+            <li>Table of Contents</li>
+            <li>
+              Projects
+              <ul>
+              <li><details>
+                <summary>little-C Interpreter</summary>
+                <ul>
+                  <li>Built in C++</li>
+                  <li><details>
+                   <summary>Notable Features</summary> 
+                    <ul>
+                      <li>
+                        automatic scoping
+                      </li>
+                      <li>
+                        working parsing and lexing
+                      </li>
+                      <li>
+                        utilizes multiple data types
+                      </li>
+                    </ul>
+                  </details></li> 
+                  <li>
+                    <a href="https://github.com/OnStarPrograms/littlec" target="_blank"><button>github</button></a>
+                  </li>
+                </ul>
+              </details>
+              </li>
+                <li><details>
+                <summary>BrainFuck Interpreter</summary>
+                <ul>
+                  <li>Built in C</li>
+                  <li><details>
+                   <summary>Notable Features</summary> 
+                    <ul>
+                      <li>
+                        Working IO
+                      </li>
+                      <li>
+                        Used in a capture the flag challenge
+                      </li>
+                      <li>
+                        Recursive
+                      </li>
+                    </ul>
+                  </details></li> 
+                  <li>
+                    <a href="https://github.com/OnStarPrograms/Brainf-ck" target="_blank"><button>github</button></a>
+                  </li>
+                </ul>
+              </details>
+</li>
+                <li><details>
+                <summary>Cheating Go-Fish Bot</summary>
+                <ul>
+                  <li>Built in Python</li>
+                  <li><details>
+                   <summary>Notable Features</summary> 
+                    <ul>
+                      <li>
+                        Utilizes a string quirk of the python Interpreter to pull data from a class object without knowing the variables before hand.
+                      </li>
+                      <li>
+                        Used to teach students python classes
+                      </li>
+                      <li>
+                        Go-Fish
+                      </li>
+                    </ul>
+                  </details></li> 
+                  <li>
+                    <a href="https://github.com/OnStarPrograms/CheatingGoFish" target="_blank"><button>github</button></a>
+                  </li>
+                </ul>
+              </details></li>
+              </ul>
+          </ul>
+        <section class="field-row" style="justify-content: flex-end">
+          <button>OK</button>
+          <button>Cancel</button>
+        </section>
+      </div>
+    </div>
+
+
+
+  <div id="teacher" class="window teach" style="margin: 32px; width: 300px" >
+      <div class="title-bar" onmousedown="moveTeachStart()" onmouseup="moveTeachEnd()">
+        <div class="title-bar-text">
+            Socials
+        </div>
+
+        <div class="title-bar-controls">
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+         <fieldset>
+          <legend>Socials</legend>
+          <a href="https://github.com/OnStarPrograms" target="_blank"><button>github</button></a>
+          <a href="https://www.linkedin.com/in/aiden-programs" target="_blank"><button>linked-in</button></a>
+<a href="mailto:thomas.aiden@starprograms.dev" target="_blank"><button>E-mail</button></a>
+
+         </fieldset> 
+        <section class="field-row" style="justify-content: flex-end">
+          <button>OK</button>
+          <button>Cancel</button>
+        </section>
+      </div>
+    </div>
+
+
+  <div id="game" class="window game" style="margin: 32px; width: 300px" >
+      <div class="title-bar" onmousedown="moveGameStart()" onmouseup="moveGameEnd()">
+        <div class="title-bar-text">
+            Game
+        </div>
+
+        <div class="title-bar-controls">
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <canvas id="doom">
+
+        
+        </canvas>
+        
+        <section class="field-row" style="justify-content: flex-end">
+          <button>OK</button>
+          <button>Cancel</button>
+        </section>
+      </div>
+    </div>
+
+
+
+  </body>
+    <script src="./shmovemnt.js"></script>
+    <script src="./game.js"></script>
+</html>
