@@ -23,9 +23,9 @@ candleSprite[2].src = candleSprite3;
 
 
 var handTapping = [new Image(), new Image(), new Image(), new Image(), new Image()];
-
+ 
 let hand1 = 'https://onstarprograms.github.io/website/data/frame_0_delay-0.17s.gif'; 
-let hand2 = 'https://onstarprograms.github.io/website/data/frame_1_delay-0.17s.giff'; 
+let hand2 = 'https://onstarprograms.github.io/website/data/frame_1_delay-0.17s.gif'; 
 let hand3 = 'https://onstarprograms.github.io/website/data/frame_2_delay-0.17s.gif';  
 let hand4 = 'https://onstarprograms.github.io/website/data/frame_3_delay-0.17s.gif'; 
 let hand5 =  'https://onstarprograms.github.io/website/data/frame_4_delay-0.17s.gif'; 
@@ -108,8 +108,8 @@ class Table{
         0,
         handTapping[0].width,
         handTapping[0].height,
-        40,
-        0,
+        width-200,
+        -30,
         (SPRITE_WIDTH+90),
         SPRITE_HEIGHT
     );
@@ -130,26 +130,25 @@ class Table{
     }
     else {
 
-      
-      
-      this.drawable.beginPath();
-      this.drawable.moveTo(width/2-10, height/2-20); // Move to the starting point (bottom-left corner)
-      this.drawable.lineTo(width/2+10, height/2-20); // Draw the bottom base
-      this.drawable.lineTo(width/2+10, height/2-30);  // Draw the right side
-      this.drawable.lineTo(width/2-10, height/2-30);   // Draw the top base
-      this.drawable.closePath();    // Close the path (draw the left side)
-
-      this.drawable.stroke(); // Draw the outline of the trapezoid
-
-      this.drawable.fillStyle = 'rgba(245,245,82,100)';
-      this.drawable.fill();    }
+     this.drawable.drawImage(
+        candleSprite[(timer+1)%3],
+        0,
+        0,
+        candleSprite[timer%3].width,
+        candleSprite[timer%3].height,
+        width/2-30,
+        height/2-30,
+        (SPRITE_WIDTH+90)/3,
+        SPRITE_HEIGHT/3
+    ); 
+     }
   }
 }
 
 class Player{
   #hand = ['fire', 'sword', 'flag', 'health'];
   #secondaryHand = [];
-  #scary = true;
+  #scary = false;
   #defend;
   #attack;
   #health = 10;
