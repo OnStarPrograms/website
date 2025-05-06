@@ -1,3 +1,5 @@
+const divCanvas = document.getElementById("body");
+
 const canvas = document.getElementById("doom");
 const ctx = canvas.getContext("2d");
 let width = canvas.width; // Width of the scene
@@ -11,6 +13,12 @@ const SPACING_WIDTH = 10;
 var image = new Image();
 image.src = spriteSheetURL;
 image.crossOrigin = true;
+
+var secondImage = new Image();
+secondImage.src = secondSprite;
+secondImage.crossOrigin = true;
+
+
 
 var candleSprite = [new Image(), new Image(), new Image()];
 let candleSprite1 = 'https://onstarprograms.github.io/website/data/C300-1.png'; 
@@ -83,6 +91,9 @@ class Table{
     this.drawable = context;
   }
 
+  setScary(){
+    this.#scary = true;
+  }
   draw(){
     this.drawable.fillStyle = 'rgba(0,0,0,100)';
     this.drawable.fillRect(0,0,width,height);
@@ -111,8 +122,7 @@ class Table{
 
       this.drawable.fillStyle = 'rgba(204,0,0,100)';
       this.drawable.fill();
-      
-
+     
       this.drawable.drawImage(
         candleSprite[timer%3],
         0,
@@ -124,19 +134,7 @@ class Table{
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
     );
-      this.drawable.drawImage(
-        handTapping[timer%5],
-        0,
-        0,
-        handTapping[0].width,
-        handTapping[0].height,
-        width-200,
-        -30,
-        (SPRITE_WIDTH+90),
-        SPRITE_HEIGHT
-    );
-    
-    this.drawable.drawImage(
+         this.drawable.drawImage(
         candleSprite[(timer+1)%3],
         0,
         0,
@@ -159,10 +157,15 @@ class Table{
         candleSprite[timer%3].width,
         candleSprite[timer%3].height,
         width/2-30,
-        height/2-30,
+        height/2-20,
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
     ); 
+
+    this.drawable.font = "48px serif";
+    this.drawable.fillStyle = "white";
+    this.drawable.fillText("The Tower", 10, 50);
+    this.drawable.fillText("Calls", 10, 90);
      }
   }
 }
@@ -186,6 +189,10 @@ class Player{
   }
   
   loseHealth(amount){
+    divCanvas.classList.toggle('shake');
+    setTimeout(() => {
+      divCanvas.classList.toggle('shake');
+    }, 500);
     this.#health-=amount;
   }
 
@@ -201,14 +208,27 @@ class Player{
       this.choice = this.#selection;
   }
 
+  choiceCard(){
+    return this.#hand[this.choice];
+  }
+
   makeScaryHand(){
     this.#secondaryHand = this.#hand;
     this.#hand = ['tower'];
     this.#scary = true;
   }
+  endScaryHand(){
+    this.#hand = [];
+  }
+  getScary(){
+    return this.#scary;
+  }
+  setScary(){
+    this.#scary = true;
+  }
 
   drawHand(){
-    var posX = 10;
+    var posX = 20;
     var posY = height-40;
     let prevPos = posY;
     this.#selection = -1;
@@ -228,10 +248,11 @@ class Player{
       }
       else {
         var position = spritePositionToImagePosition(2, 2);
+        
       }
 
       posY = prevPos;
-      if (mousePos.x < posX+40 && mousePos.x > posX){
+      if (mousePos.x < posX+40 && mousePos.x > posX && (mousePos.y < posY+150 && mousePos.y > posY+50)){
         this.#selection = index;
       }
 
@@ -259,19 +280,124 @@ class Player{
         SPRITE_HEIGHT/4
     );
       posX+=40;
-      
-
-
     } 
+  }
+}
+
+
+class Enemy{
+  #width_back = 200;
+  #state = 'idle';
+  #revealed = false;
+  #choice;
+  #scary = false;
+  constructor(context){
+    this.drawable = context;
+  }
+  drawHand(){
+    if (this.#revealed == false){
+      ctx.drawImage(
+        secondImage,
+        spritePositionToImagePosition(0,1).x,
+        spritePositionToImagePosition(0,1).y,
+        SPRITE_WIDTH,
+        SPRITE_HEIGHT,
+        width/2+15,
+        32,
+        (SPRITE_WIDTH+80)/4,
+        SPRITE_HEIGHT/4
+    );
+
+    }
+    if (this.#revealed == true){
+      let flag = true;
+      const element = this.#choice;
+      if (element == 'sword'){
+        var position = spritePositionToImagePosition(this.#scary, 1);
+      }
+      else if (element == 'flag'){
+        var position = spritePositionToImagePosition(this.#scary, 0);
+      }
+      else if (element == 'fire'){
+        var position = spritePositionToImagePosition(this.#scary, 2);
+      }
+      else if (element == 'health'){
+        var position = spritePositionToImagePosition(2, this.#scary);
+      }
+      else {
+        var position = spritePositionToImagePosition(2, 2);
+        if (myPlayer.getScary() === true){
+          myPlayer.endScaryHand();
+        }
+        else if (myPlayer.getScary() === false){
+          myPlayer.makeScaryHand();
+        }
+        myTable.setScary();
+        this.#state = 'hold';
+        this.#width_back=125;
+
+      }
+      ctx.drawImage(
+        image,
+        position.x,
+        position.y,
+        SPRITE_WIDTH,
+        SPRITE_HEIGHT,
+        width/2+15+200-this.#width_back,
+        32,
+        (SPRITE_WIDTH+80)/4,
+        SPRITE_HEIGHT/4
+      );
+
+    }
+    if (this.#state == 'idle'){
+     this.drawable.drawImage(
+        handTapping[timer%5],
+        0,
+        0,
+        handTapping[0].width,
+        handTapping[0].height,
+        width-this.#width_back,
+        -30,
+        (SPRITE_WIDTH+90),
+        SPRITE_HEIGHT
+    );
+    }
+    if (this.#state == 'hold'){
+     this.drawable.drawImage(
+        handTapping[4],
+        0,
+        0,
+        handTapping[0].width,
+        handTapping[0].height,
+        width-this.#width_back,
+        -30,
+        (SPRITE_WIDTH+90),
+        SPRITE_HEIGHT
+    );
+    }
     
   }
   
+  revealHand(variable, MainPlayer){
+    this.#state = 'hold';
+    setTimeout(() => {
+        this.#state = 'idle';
+    }, 2000);
+    setTimeout(() => {
+        this.#revealed = true;
+    }, 1000);
+    this.#choice = MainPlayer.choiceCard();
+    if (this.#choice == 'tower'){
+          }
+  }
+
 }
 
 
 var myTable = new Table(ctx);
 var myPlayer = new Player(ctx);
-
+var myEnemy = new Enemy(ctx);
 
 canvas_mouse.addEventListener('click', function(event) {
   myPlayer.setChoice();  
@@ -281,7 +407,9 @@ canvas_mouse.addEventListener('click', function(event) {
 function doom(){
     myTable.draw();
     myPlayer.drawHand();
-//gameloop
+    myEnemy.drawHand();
+    //gameloop
+    
 
     window.requestAnimationFrame(doom);
 }

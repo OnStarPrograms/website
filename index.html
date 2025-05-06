@@ -8,7 +8,7 @@
     <link href="./css/style.css" rel="stylesheet">
 
   </head>
-  <body>
+  <body id="body">
     <div>
     </div>
     <div id="introduction" class="window" style="margin: 32px; width: 250px" >
@@ -175,15 +175,15 @@
         </div>
       </div>
       <div class="window-body">
-        <canvas id="doom">
+        <canvas id="doom" >
 
         
         </canvas>
         
         <section class="field-row" style="justify-content: flex-end">
             <button>Rules</button>
-          <button>Submit Defense</button>
-            <button>Submit Offense</button>
+          <button onclick="myEnemy.revealHand('defense', myPlayer)">Submit Defense</button>
+            <button onclick="myEnemy.revealHand('offense', myPlayer)">Submit Offense</button>
         </section>
       </div>
     </div>
