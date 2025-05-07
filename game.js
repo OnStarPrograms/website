@@ -62,7 +62,7 @@ heartTapping[4].src = heart5;
 
 var CakeTapping = [new Image(), new Image(), new Image(), new Image(), new Image()];
  
-let Cake1 = 'https://onstarprograms.github.io/website/data/Cakes/AngleFood_Cake_NO_OUTLINE.png'; 
+let Cake1 = 'https://onstarprograms.github.io/website/data/Cakes/AngelFood_Cake_NO_OUTLINE.png'; 
 let Cake2 = 'https://onstarprograms.github.io/website/data/Cakes/Rainbow_Cake_NO_OUTLINE.png'; 
 let Cake3 = 'https://onstarprograms.github.io/website/data/Cakes/Funfetti_Cake_NO_OUTLINE.png';  
 let Cake4 = 'https://onstarprograms.github.io/website/data/Cakes/Carrot_Cake_NO_OUTLINE.png'; 
@@ -122,6 +122,7 @@ class Table{
   #scary = false;
   #win_1 = false;
   #win_2 = false;
+  #cakeFlag = false;
   constructor(context){
     this.drawable = context;
   }
@@ -190,13 +191,16 @@ class Table{
         SPRITE_HEIGHT/3
     );
       if (this.#win_2 == true){
+        if (this.#cakeFlag == false){
+          this.#cakeFlag = timer;
+        }
         this.drawable.drawImage(
-        CakeTapping[(timer)%5],
+        CakeTapping[this.#cakeFlag%5],
         0,
         0,
         CakeTapping[0].width,
         CakeTapping[0].height,
-        width-100,
+        width/2-50,
         height/2-10,
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
@@ -263,6 +267,9 @@ class Player{
     this.choice = -1;
   }
 
+  getDefence(){
+    return this.#defend;
+  }
   isUsed(accessor){
     return this.#used[accessor];
   }
@@ -340,6 +347,10 @@ class Player{
     this.#secondaryHand = this.#hand;
     this.#hand = ['tower'];
     this.#scary = true;
+  }
+  makeheartHand(){
+    this.#secondaryHand = this.#hand;
+    this.#hand = ['health'];
   }
   endScaryHand(){
     this.#hand = [];
@@ -548,9 +559,12 @@ class Enemy{
 
         if (this.#favor == 5){
           // Good Ending!!!
-          myPlayer.makeScaryHand();
+          myPlayer.makeheartHand();
           myTable.setWin_2();
-          this.#state = 'hold';
+          let timer9 = setTimeout(() => {
+            clearTimeout(timer9);
+            this.#state = 'hold';
+          }, 2000);
         }
 
         var position = spritePositionToImagePosition(2, 1);
@@ -737,7 +751,20 @@ class Enemy{
 
 
     //call the AI
-    this.#choice = MainPlayer.choiceCard();
+    //
+    if (this.#damage < myPlayer.getDefence()+2){
+      this.#choice = 'flag';
+    }
+    else if (this.#health < 5){
+      this.#choice = 'fire';
+    }
+    else{
+      this.#choice = 'sword';
+      if (timer%3 == 0)
+        this.#choice = 'health';
+    }
+    
+    //this.#choice = MainPlayer.choiceCard();
     if (this.#skipped == true)
       this.#choice = 'rec_health';   
 
