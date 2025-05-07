@@ -438,7 +438,7 @@ class Player{
     }
     if (this.#scary == false){
     this.drawable.drawImage(
-        heartTapping[timer%(this.#health)],
+        heartTapping[(timer%(this.#health))%5],
         0,
         0,
         heartTapping[0].width,
