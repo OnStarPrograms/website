@@ -309,7 +309,7 @@ class Player{
     if (this.#block == true)
       Amount -= this.#defend;
     Amount = Math.max(0, Amount);
-    this.#health-=Amount;
+    //this.#health-=Amount;
     this.#block = false;
   }
 
@@ -545,7 +545,6 @@ class Enemy{
         }
       }
       else if (element == 'rec_health'){
-        this.#favor+=1;
 
         if (this.#favor == 5){
           // Good Ending!!!
@@ -558,6 +557,7 @@ class Enemy{
         if (this.#takenAction == false){
           let timer2 = setTimeout(() => {
             //insert Action
+            this.#favor+=1;
             clearTimeout(timer2);
 
           }, 200);
