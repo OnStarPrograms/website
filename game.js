@@ -44,6 +44,23 @@ handTapping[2].src = hand3;
 handTapping[3].src = hand4;
 handTapping[4].src = hand5;
 
+
+var heartTapping = [new Image(), new Image(), new Image(), new Image(), new Image()];
+ 
+let heart1 = 'https://onstarprograms.github.io/website/data/heart/frame_0_delay-0.2s.gif'; 
+let heart2 = 'https://onstarprograms.github.io/website/data/heart/frame_1_delay-0.1s.gif'; 
+let heart3 = 'https://onstarprograms.github.io/website/data/heart/frame_2_delay-0.1s.gif';  
+let heart4 = 'https://onstarprograms.github.io/website/data/heart/frame_3_delay-0.1s.gif'; 
+let heart5 =  'https://onstarprograms.github.io/website/data/heart/frame_4_delay-0.1s.gif'; 
+
+heartTapping[0].src = heart1; 
+heartTapping[1].src = heart2;
+heartTapping[2].src = heart3;
+heartTapping[3].src = heart4;
+heartTapping[4].src = heart5;
+
+
+
 let timer = 0;
 setInterval(() => {
   timer++;
@@ -281,6 +298,10 @@ class Player{
     );
       posX+=40;
     } 
+  }
+  drawHeart(){
+
+    if (this.#scary == false){;};
   }
 }
 
