@@ -60,6 +60,22 @@ heartTapping[3].src = heart4;
 heartTapping[4].src = heart5;
 
 
+var CakeTapping = [new Image(), new Image(), new Image(), new Image(), new Image()];
+ 
+let Cake1 = 'https://onstarprograms.github.io/website/data/Cakes/AngleFood_Cake_NO_OUTLINE.png'; 
+let Cake2 = 'https://onstarprograms.github.io/website/data/Cakes/Rainbow_Cake_NO_OUTLINE.png'; 
+let Cake3 = 'https://onstarprograms.github.io/website/data/Cakes/Funfetti_Cake_NO_OUTLINE.png';  
+let Cake4 = 'https://onstarprograms.github.io/website/data/Cakes/Carrot_Cake_NO_OUTLINE.png'; 
+let Cake5 =  'https://onstarprograms.github.io/website/data/Cakes/Strawberry_Cake_NO_OUTLINE.png'; 
+
+CakeTapping[0].src = Cake1; 
+CakeTapping[1].src = Cake2;
+CakeTapping[2].src = Cake3;
+CakeTapping[3].src = Cake4;
+CakeTapping[4].src = Cake5;
+
+
+
 
 let timer = 0;
 setInterval(() => {
@@ -104,6 +120,8 @@ function spritePositionToImagePosition(row, col) {
 
 class Table{
   #scary = false;
+  #win_1 = false;
+  #win_2 = false;
   constructor(context){
     this.drawable = context;
   }
@@ -111,6 +129,15 @@ class Table{
   setScary(){
     this.#scary = true;
   }
+  
+  setWin_1(){
+    this.#scary = true;
+    this.#win_1 = true;
+  }
+  setWin_2(){
+    this.#win_2 = true;
+  }
+
   draw(){
     this.drawable.fillStyle = 'rgba(0,0,0,100)';
     this.drawable.fillRect(0,0,width,height);
@@ -162,9 +189,41 @@ class Table{
         (SPRITE_WIDTH+90)/3,
         SPRITE_HEIGHT/3
     );
-
+      if (this.#win_2 == true){
+        this.drawable.drawImage(
+        CakeTapping[(timer)%5],
+        0,
+        0,
+        CakeTapping[0].width,
+        CakeTapping[0].height,
+        width-100,
+        height/2-10,
+        (SPRITE_WIDTH+90)/3,
+        SPRITE_HEIGHT/3
+    );
+      }
       
     }
+    else if (this.#win_1 == true) {
+
+     this.drawable.drawImage(
+        candleSprite[(timer+1)%3],
+        0,
+        0,
+        candleSprite[timer%3].width,
+        candleSprite[timer%3].height,
+        width/2-30,
+        height/2-20,
+        (SPRITE_WIDTH+90)/3,
+        SPRITE_HEIGHT/3
+    ); 
+
+    this.drawable.font = "48px serif";
+    this.drawable.fillStyle = "white";
+    this.drawable.fillText("The Tower", 10, 50);
+    this.drawable.fillText("   will     win", 10, 90);
+    }
+    
     else {
 
      this.drawable.drawImage(
@@ -194,13 +253,30 @@ class Player{
   #usedTimer = [0,0,0,0]; //used to set a timeout for used items
   #secondaryHand = [];
   #scary = false;
-  #defend;
-  #attack;
+  #defend = 1;
+  #attack = 1;
   #health = 5;
   #selection = 0;
+  #block = false;
   constructor(context){
     this.drawable = context;
     this.choice = -1;
+  }
+
+  isUsed(accessor){
+    return this.#used[accessor];
+  }
+
+  attackPower(){
+    return this.#attack;
+  }
+
+  increasePower(){
+    this.#attack += 1;
+  }
+
+  increaseDefense(){
+    this.#defend += 1;
   }
 
   deactivate(_index){
@@ -229,9 +305,17 @@ class Player{
       divCanvas.classList.toggle('shake');
       clearTimeout(timer1);
     }, 500);
-    this.#health-=amount;
+    let Amount = amount;
+    if (this.#block == true)
+      Amount -= this.#defend;
+    Amount = Math.max(0, Amount);
+    this.#health-=Amount;
+    this.#block = false;
   }
 
+  activateBlock(){
+    this.#block = true;
+  }
   gainHealth(amount){
     this.#health+=amount;
   }
@@ -337,8 +421,9 @@ class Player{
     } 
   }
   drawHeart(){
-    if (this.#health < 0){
-      //call the lose function
+    if (this.#health <= 0){
+      //call the lose functioon
+      myEnemy.setScary();
     }
     if (this.#scary == false){
     this.drawable.drawImage(
@@ -365,9 +450,19 @@ class Enemy{
   #choice;
   #scary = false;
   #takenAction = false;
+  #health = 10;
+  #favor = 0;
+  #skipped = false;
+  #damage = 1;
   constructor(context){
     this.drawable = context;
   }
+
+
+  gainHealth(variables){
+    this.#health+=variables;
+  }
+
   drawHand(){
     if (this.#revealed == false){
       ctx.drawImage(
@@ -376,7 +471,7 @@ class Enemy{
         spritePositionToImagePosition(0,1).y,
         SPRITE_WIDTH,
         SPRITE_HEIGHT,
-        width/2+15,
+        width/2+15+200-this.#width_back,
         32,
         (SPRITE_WIDTH+80)/4,
         SPRITE_HEIGHT/4
@@ -390,7 +485,7 @@ class Enemy{
         var position = spritePositionToImagePosition(this.#scary, 1);
         if (this.#takenAction == false){
           let timer2 = setTimeout(() => {
-            myPlayer.loseHealth(1);
+            myPlayer.loseHealth(this.#damage);
             clearTimeout(timer2);
 
           }, 200);
@@ -406,6 +501,7 @@ class Enemy{
         if (this.#takenAction == false){
           let timer2 = setTimeout(() => {
             //Insert Action
+            this.#damage+=1;
             clearTimeout(timer2);
 
           }, 200);
@@ -421,6 +517,7 @@ class Enemy{
         if (this.#takenAction == false){
           let timer2 = setTimeout(() => {
             //Insert Action
+            this.gainHealth(1);
             clearTimeout(timer2);
 
           }, 200);
@@ -433,6 +530,31 @@ class Enemy{
       }
       else if (element == 'health'){
         var position = spritePositionToImagePosition(2, this.#scary);
+        if (this.#takenAction == false){
+          let timer2 = setTimeout(() => {
+            //insert Action
+            this.gainHealth(1);
+            clearTimeout(timer2);
+
+          }, 200);
+          this.#takenAction = true;
+          let timer3 = setTimeout(() => {
+            this.#revealed = false;
+            clearTimeout(timer3);
+          }, 2000);
+        }
+      }
+      else if (element == 'rec_health'){
+        this.#favor+=1;
+
+        if (this.#favor == 5){
+          // Good Ending!!!
+          myPlayer.makeScaryHand();
+          myTable.setWin_2();
+          this.#state = 'hold';
+        }
+
+        var position = spritePositionToImagePosition(2, 1);
         if (this.#takenAction == false){
           let timer2 = setTimeout(() => {
             //insert Action
@@ -498,26 +620,135 @@ class Enemy{
         SPRITE_HEIGHT
     );
     }
-    
+    if (this.#state == 'damage'){
+    this.drawable.drawImage(
+        handTapping[0],
+        0,
+        0,
+        handTapping[0].width,
+        handTapping[0].height,
+        width-this.#width_back,
+        -30,
+        (SPRITE_WIDTH+90),
+        SPRITE_HEIGHT
+    );
+    } 
+  }
+  skipTurn(){
+    this.#skipped = true;
   }
   
+  loseHealth(health){
+    this.#health-=health;
+    if (this.#health < 0){
+      //Bad Ending
+      myPlayer.makeScaryHand();
+      myTable.setWin_1(); 
+      this.#state = 'hold';
+      this.#width_back=-200;
+
+
+    }
+    this.#state = 'damage';
+    let timer7 = setTimeout(() => {
+      this.#state = 'idle';
+      clearTimeout(timer7);
+    }, 1000);
+  }
+
+
+  setScary(){
+     if (myPlayer.getScary() === true){
+          myPlayer.endScaryHand();
+        }
+        else if (myPlayer.getScary() === false){
+          myPlayer.makeScaryHand();
+        }
+        myTable.setScary();
+        this.#state = 'hold';
+        this.#width_back=125;
+
+
+  }
+  // This is called on button push <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   revealHand(variable, MainPlayer){
     this.#state = 'hold';
+
+
+    //Immediate player actions
+    if (MainPlayer.choiceCard() == 'sword' && variable != 'offense'){
+      myPlayer.activateBlock();
+    }
+
+    else if (MainPlayer.choiceCard() == 'flag'){
+      //flag choice
+      if (variable == 'offense'){
+        myPlayer.increasePower();
+      }
+      else{
+        myPlayer.increaseDefense();
+      }
+    }
+    else if (MainPlayer.choiceCard() == 'health'){
+      //heart choice
+      if (variable == 'offense'){
+        myEnemy.skipTurn();
+      }
+      else{
+        myPlayer.increaseDefense();
+      }
+    }
+ 
+      
     let timer4 = setTimeout(() => {
         this.#state = 'idle';
         clearTimeout(timer4);
     }, 3500);
     let timer5 = setTimeout(() => {
+
         this.#revealed = true;
+        this.#skipped = false;
         clearTimeout(timer5);
+      
+
+      //Players choice effects on enemy
+      let timer8 = setTimeout(() => {
+        if (MainPlayer.isUsed(MainPlayer.choiceAccessor()) == false){
+          if (MainPlayer.choiceCard() == 'sword'){
+            if (variable == 'offense'){
+              myEnemy.loseHealth(myPlayer.attackPower());
+            }
+          }
+          else if (MainPlayer.choiceCard() == 'fire'){
+            //fire choice
+            if (variable == 'offense'){
+              myPlayer.loseHealth(1);
+            }
+            else{
+              myPlayer.gainHealth(1);
+            }
+          }
+          
+        }
+        clearTimeout(timer8);
+      }, 500);
+
     }, 1000);
+
+
+    //call the AI
     this.#choice = MainPlayer.choiceCard();
+    if (this.#skipped == true)
+      this.#choice = 'rec_health';   
+
+
     let timer6 = setTimeout(() => {
         myPlayer.deactivate(MainPlayer.choiceAccessor());
         clearTimeout(timer6);
     }, 3500);
     this.#takenAction = false;
   }
+
 
 }
 
