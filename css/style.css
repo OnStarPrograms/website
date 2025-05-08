@@ -37,6 +37,11 @@ body{
   animation-duration: 1s;
   /*animation-delay: .75s;*/
 }
+#rules{
+  position: absolute;
+  left: 400px;
+  top: 0px;
+}
 #game{
   position: absolute;
   left: 770px;

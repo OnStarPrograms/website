@@ -4,6 +4,7 @@ var IntroActive = false;
 var ProgramActive = false;
 var TeachActive = false;
 var gameActive = false;
+var rulesActive = false;
 var mouseX = 0;
 var mouseY = 0;
 
@@ -30,6 +31,13 @@ function moveProgramStart() {
 function moveProgramEnd() {
   ProgramActive = false;
 }
+function moverulesStart() {
+  rulesActive = true;
+}
+function moverulesEnd() {
+  rulesActive = false;
+}
+
 
 function moveTeachStart() {
   TeachActive = true;
@@ -195,10 +203,16 @@ function changeData(input){
 }
 */
 
+var rules = document.getElementById('rules');
+function toggleRules(){
+  rules.classList.toggle('hidden');
+}
+
 var allmoveIntro = false;
 var allmoveprogram = false;
 var allmovegame = false;
 var allmoveTeach = false;
+var allmoverules = false;
 var addZ = 1;
 
 //clearAll();
@@ -216,6 +230,7 @@ function gameLoop() {
         allmoveprogram = false;
         allmovegame = false;
         allmoveTeach = false;
+        allmoverules = false;
       }
     }
 
@@ -231,6 +246,7 @@ function gameLoop() {
         allmoveprogram = true;
         allmovegame = false;
         allmoveTeach = false;
+        allmoverules = false;
       }
     }
 
@@ -246,6 +262,7 @@ function gameLoop() {
         allmoveprogram = false;
         allmovegame = false;
         allmoveTeach = true;
+        allmoverules = false;
       }
     }
 
@@ -261,8 +278,25 @@ function gameLoop() {
         allmoveprogram = false;
         allmovegame = true;
         allmoveTeach = false;
+        allmoverules = false;
       }
     }
+
+
+    if (rulesActive === true){
+      rules.style.left = (mouseX-125)+'px';
+      rules.style.top = (mouseY-40)+'px';
+      if (allmoverules == false){
+        rules.style.zIndex += addZ;
+        addZ+= 1;
+        allmoveIntro = false;
+        allmoveprogram = false;
+        allmovegame = false;
+        allmoveTeach = false;
+        allmoverules = true;
+      }
+    }
+
 
 
     window.requestAnimationFrame(gameLoop);

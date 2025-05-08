@@ -165,6 +165,37 @@
     </div>
 
 
+
+  <div id="rules" class="window rule hidden" style="margin: 32px; width: 300px;">
+      <div class="title-bar" onmousedown="moverulesStart()" onmouseup="moverulesEnd()">
+        <div class="title-bar-text">
+            Rules
+        </div>
+
+        <div class="title-bar-controls">
+        </div>
+      </div>
+      <div class="window-body">
+         <fieldset>
+          <legend><b>Beware The Tower</b></legend>
+            <p>The tower seeks to stop your beating heart before you make it to the end</p>
+            </br>
+            <p><b>The cards are the Key</b></p>
+            <p>your cards can keep you safe</p>
+          <p>the <b>campfire</b> can help <b>soothe your fear of the dark</b>, but bewarned,</p>
+          <p>to attack one with fire, is the same as <b> attacking yourself </b></p>
+          <p>the <b>holy sword</b> can be your sword and your shield, but you might <b>lose track of time</b> 
+          <p>to raise the <b>flag</b> is to <b>boister your army</b> to ravage this land, or to <b>call on a stronger defense</b></p>
+          <p>to read your <b>heart</b> is seen as reading a book, though it <b>aids</b> you it can also <b>ail</b> you.</p>
+          <p>If you <b>give your heart to the tower</b> sometimes the <b>tower gives itself back</b></p> 
+         </fieldset> 
+        <section class="field-row" style="justify-content: flex-end">
+        </section>
+      </div>
+    </div>
+
+
+
   <div id="game" class="window game" style="margin: 32px; width: 300px" >
       <div class="title-bar" onmousedown="moveGameStart()" onmouseup="moveGameEnd()">
         <div class="title-bar-text">
@@ -181,7 +212,7 @@
         </canvas>
         
         <section class="field-row" style="justify-content: flex-end">
-            <button>Rules</button>
+            <button onclick="toggleRules()">Rules</button>
           <button onclick="myEnemy.revealHand('defense', myPlayer)">Submit Defense</button>
             <button onclick="myEnemy.revealHand('offense', myPlayer)">Submit Offense</button>
         </section>
